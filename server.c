@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
 	struct sockaddr_storage their_addr; //connector's socket info
 	socklen_t sin_size;
 	struct sigaction sa;
-	int yes=1;
+	int yes=1; //What the hell, Past Ibbolia?
 	char s[INET6_ADDRSTRLEN];
 	char buffer[256];
 	int rv;
