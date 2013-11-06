@@ -2,6 +2,8 @@
 #include <pthread.h>
 #include <sys/resource.h>
 #include <asm/errno.h>
+
+#include <sys/socket.h>
 int WorkThread( void * ); // Prototype
 
 #define MAXBUF		1024
@@ -20,7 +22,7 @@ main(){
 	MyPid = pthread_self(); 
 	CurrentPriority = getpriority( PRIO_PROCESS, 0 );
 	// Create a new thread that will start executing at location
-	WorkThread NewThreadID = CreateAThread( (void *)(* WorkThread), &data);
+	//WorkThread NewThreadID = CreateAThread( (void *)(* WorkThread), &data);
 	
 	// Other main code
 	struct addrinfo  hints, *servinfo, *p; //info for the server to know about itself
@@ -74,4 +76,5 @@ int WorkThread( void *data ){
 	
 
 }
+
 // End of WorkThread
