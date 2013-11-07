@@ -74,10 +74,10 @@ main(int argc, char* argv[]){
 		
 		
 		
-		/*
+		
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		printf("Thread made\n");
-	*/
+	
 	
 	
 	
