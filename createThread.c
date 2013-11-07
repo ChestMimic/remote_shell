@@ -14,7 +14,7 @@ unsigned int CreateAThread( void *, int *); // Prototype
 // ///////////////////////////////////////////////////////////////////////
 // This is the main() code - it is the original thread
 // ///////////////////////////////////////////////////////////////////////
-main(){
+main(int argc, char* argv[]){
 	unsigned int CurrentPriority, MyPid;
 	unsigned int NewThreadID;
 	
@@ -34,6 +34,7 @@ main(){
 	// Get the port number via the command line
 	listener = argv[1];//grab port number
 	
+	memset(&hints, 0, sizeof hints);
 	
 	/*---Initialize address/port structure---*/
 	bzero(&self, sizeof(self));
