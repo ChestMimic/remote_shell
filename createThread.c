@@ -69,9 +69,7 @@ main(int argc, char* argv[]){
         sin_size = sizeof their_addr;
 		printf("waiting for next accept\n");
 		// Do the accept
-		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
-
-		printf("%s:%d connected\n", inet_ntoa(their_addr.sin_addr), ntohs(their_addr.sin_port));		
+		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 		
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		printf("Thread made\n");
