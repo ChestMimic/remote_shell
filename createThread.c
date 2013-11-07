@@ -92,7 +92,7 @@ int WorkThread( void *data ){
 	//recieve client's message
 
 		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
-		size = recv(fdConn, buffer, MAXBUF, 0);
+		//size = recv(fdConn, buffer, MAXBUF, 0);
 		//printf(buffer);
 		/*---Echo back anything sent---*/
 		send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
