@@ -81,19 +81,20 @@ main(int argc, char* argv[]){
 	close(fdConn);
 	
 	
-	
-	
+	pthread_create( pthread_t &Thread, pthread_attr_init(pthread_attr_t &Attribute ), WorkThread, &fdConn);
+	/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
-		printf("Thread made\n");
+		
+		*/
+	printf("Thread made\n");
 	}
 	
 } // End of main
 // This is the new thread that's created
 
-int WorkThread( void *data ){
+int WorkThread( int fdConn ){
 	//printf("New thread.
-	int fdConn;
-	fdConn = (int)data;
+
 	//make input buffer
 	//		printf("%s\n", fdConn);
 
