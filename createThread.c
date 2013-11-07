@@ -40,7 +40,7 @@ main(int argc, char* argv[]){
 	/*---Initialize address/port structure---*/
 	bzero(&self, sizeof(self));
 	self.sin_family = AF_INET;
-	self.sin_port = htons(9876);//user assigned port number
+	self.sin_port = htons(listener);//user assigned port number
 	self.sin_addr.s_addr = INADDR_ANY;		
 	
 	// Establish the socket that will be used for listening
