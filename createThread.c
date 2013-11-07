@@ -47,20 +47,22 @@ main(int argc, char* argv[]){
 	
 	// Establish the socket that will be used for listening
 	fd = socket(AF_INET, SOCK_STREAM, 0); 
+	printf("socket established\n");
 	
 	// Do a bind of that socket
 	bind( fd, (struct sockaddr*)&self, sizeof(self));
-	
+	printf("Socket bound.\n");
 	
 	// Set up to listen
 	listen( fd, 5);//make larger later
+	printf("Listening ...\n");
 	int fdListen = fd;
 	while( TRUE ){
         sin_size = sizeof their_addr;
 
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
-		
+		printf("Connection established.\n");
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 	}
 	
