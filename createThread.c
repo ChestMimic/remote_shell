@@ -58,7 +58,7 @@ main(int argc, char* argv[]){
         sin_size = sizeof their_addr;
 
 		// Do the accept
-		int fdconn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
+		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
 		
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 	}
