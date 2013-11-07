@@ -72,16 +72,10 @@ main(int argc, char* argv[]){
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 	//	printf("%s\n", &fdConn);
 	
-	char buffer[MAXBUF];
-	//int size = recv(fdConn, buffer, MAXBUF, 0);
-	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
-	int size=recv(fdConn, buffer, MAXBUF, 0);
-	printf("%d\n", size);
-	printf("%s\n",buffer);
-	close(fdConn);
+
 	pthread_t Thread;
 	pthread_attr_t Attribute;
-	pthread_attr_init( &Attribute )
+	pthread_attr_init( &Attribute );
 	pthread_create( &Thread, &Attribute, WorkThread, &fdConn);
 	/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
@@ -93,7 +87,7 @@ main(int argc, char* argv[]){
 } // End of main
 // This is the new thread that's created
 
-int WorkThread( int *fdConn ){
+int WorkThread( int &fdConn ){
 	//printf("New thread.
 
 	//make input buffer
