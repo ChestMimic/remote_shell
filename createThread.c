@@ -72,11 +72,7 @@ main(int argc, char* argv[]){
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 		
 		
-		char buffer[MAXBUF];
-		int size = recv(fdConn, buffer, MAXBUF, 0);
-		send(fdConn, "HELLO", sizeof("HELLO"), 0);
-		printf("%d\n", size);
-		close(fdConn);
+		
 		
 		/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
@@ -95,18 +91,12 @@ int WorkThread( void *data ){
 	int fdConn;
 	fdConn = (int)data;
 	//make input buffer
-	char buffer[MAXBUF];//buffer size of 256 chars
-	int size;
-	//recieve client's message
-
-		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
-		//size = recv(fdConn, buffer, MAXBUF, 0);
-		//printf(buffer);
-		/*---Echo back anything sent---*/
-		send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	
+	char buffer[MAXBUF];
+	int size = recv(fdConn, buffer, MAXBUF, 0);
+	send(fdConn, "HELLO", sizeof("HELLO"), 0);
+	printf("%s\n", buffer);
 	close(fdConn);
-	
 	
 
 }
