@@ -74,6 +74,7 @@ main(int argc, char* argv[]){
 		
 		char buffer[MAXBUF];
 		int size = recv(fdConn, buffer, MAXBUF, 0);
+		send(fdConn, "HELLO", sizeof("HELLO"), 0);
 		printf("%d\n", size);
 		close(fdConn);
 		
