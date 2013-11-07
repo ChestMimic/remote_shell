@@ -71,9 +71,16 @@ main(int argc, char* argv[]){
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 		
+		
+		char buffer[MAXBUF];
+		send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
+	
+	close(fdConn);
+		
+		/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		printf("Thread made\n");
-	
+	*/
 	
 	
 	
