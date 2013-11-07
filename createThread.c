@@ -90,12 +90,13 @@ int WorkThread( void *data ){
 	char buffer[256];//buffer size of 256 chars
 	int size;
 	//recieve client's message
-	do{
+
 		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
 		size = recv(fdConn, buffer, MAXBUF, 0);
 		printf(buffer);
 		send(fdConn, "Hello", sizeof("Hello"), 0);
-	}while(size > 0);//keep reading until nothing is left
+	
+	close(fdConn);
 	
 	
 
