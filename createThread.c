@@ -7,12 +7,10 @@
 #include <pthread.h>
 
 #include <sys/socket.h>
-int WorkThread( void * ); // Prototype
 
 #define MAXBUF		1024
 #define TRUE 1
 
-unsigned int CreateAThread( void *, int *); // Prototype
 // ///////////////////////////////////////////////////////////////////////
 // This is the main() code - it is the original thread
 // ///////////////////////////////////////////////////////////////////////
