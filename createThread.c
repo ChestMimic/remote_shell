@@ -93,8 +93,8 @@ int WorkThread( void *data ){
 	//make input buffer
 	
 	char buffer[MAXBUF];
-	int size = recv(fdConn, buffer, MAXBUF, 0);
-	send(fdConn, "HELLO", sizeof("HELLO"), 0);
+	//int size = recv(fdConn, buffer, MAXBUF, 0);
+	send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	printf("%s\n", buffer);
 	close(fdConn);
 	
