@@ -67,26 +67,12 @@ main(int argc, char* argv[]){
 	int fdListen = fd;
 	while( TRUE ){
         sin_size = sizeof their_addr;
-
+		printf("waiting for next accept\n");
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
 		printf("Connection established.\n");
-	//	int out = CreateAThread( (void *)(*WorkThread), &fdConn);
+		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 	
-	
-	//printf("New thread.
-	//int fdConn;
-	//fdConn = (int)data;
-	//make input buffer
-	char buffer[256];//buffer size of 256 chars
-	int size;
-	//recieve client's message
-	do{
-		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
-		size = recv(fdConn, buffer, MAXBUF, 0);
-		printf(buffer);
-		send(fdConn, "Hello", sizeof("Hello"), 0);
-	}while(size > 0);//keep reading until nothing is left
 	
 	
 	}
