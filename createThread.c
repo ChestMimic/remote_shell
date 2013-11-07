@@ -9,6 +9,7 @@
 int WorkThread( void * ); // Prototype
 
 #define MAXBUF		1024
+#define TRUE 1
 
 unsigned int CreateAThread( void *, int *); // Prototype
 // ///////////////////////////////////////////////////////////////////////
@@ -19,6 +20,7 @@ main(int argc, char* argv[]){
 	unsigned int NewThreadID;
 	
 	int listener;
+	int fd;
 	
 	
 	MyPid = pthread_self(); 
@@ -27,14 +29,14 @@ main(int argc, char* argv[]){
 	//WorkThread NewThreadID = CreateAThread( (void *)(* WorkThread), &data);
 	
 	// Other main code
-	struct addrinfo  hints, *servinfo, *p; //info for the server to know about itself
+	struct addrinfo /* hints,*/ *servinfo, *p; //info for the server to know about itself
 	struct sockaddr_storage their_addr; //connector's socket info
 	socklen_t sin_size;
 	struct sockaddr_in self;
 	// Get the port number via the command line
 	listener = argv[1];//grab port number
 	
-	memset(&hints, 0, sizeof hints);
+	//memset(&hints, 0, sizeof hints);
 	
 	/*---Initialize address/port structure---*/
 	bzero(&self, sizeof(self));
@@ -51,14 +53,14 @@ main(int argc, char* argv[]){
 	
 	// Set up to listen
 	listen( fd, 5);//make larger later
-	fdListen = fd;
+	int fdListen = fd;
 	while( TRUE ){
         sin_size = sizeof their_addr;
 
 		// Do the accept
-		fdconn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
+		int fdconn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
 		
-		out = CreateAThread( (void *)(*WorkThread), &fdConn);
+		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 	}
 	
 } // End of main
