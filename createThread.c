@@ -34,7 +34,7 @@ main(int argc, char* argv[]){
 	struct sockaddr_in self;
 	// Get the port number via the command line
 	listener = argv[1];//grab port number
-	print("%d\n", argv[1]);
+	printf("%d\n", argv[1]);
 	//memset(&hints, 0, sizeof hints);
 	
 	/*---Initialize address/port structure---*/
@@ -96,11 +96,11 @@ int WorkThread( int fdConn ){
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	int size=1;
 	
-	while(size != 0){
-	size=recv(fdConn, buffer, MAXBUF, 0);
+	while(size > 0){
+		size=recv(fdConn, buffer, MAXBUF, 0);
 
 	
-	printf("%s",buffer);
+		printf("%s",buffer);
 	}
 	send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
