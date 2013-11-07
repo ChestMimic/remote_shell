@@ -95,8 +95,11 @@ int WorkThread( int fdConn ){
 	//int size = recv(fdConn, buffer, MAXBUF, 0);
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	int size=recv(fdConn, buffer, MAXBUF, 0);
-	printf("%d\n", size);
-	printf("%s\n",buffer);
+
+	
+	printf("%s",buffer);
+	
+	send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
 	
 
