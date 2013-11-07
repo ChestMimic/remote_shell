@@ -50,11 +50,19 @@ main(int argc, char* argv[]){
 	printf("socket established\n");
 	
 	// Do a bind of that socket
-	bind( fd, (struct sockaddr*)&self, sizeof(self));
+	if(bind( fd, (struct sockaddr*)&self, sizeof(self)) < 0){
+		perror("Bind error");
+		exit(1);
+	
+	}
 	printf("Socket bound.\n");
 	
 	// Set up to listen
-	listen( fd, 5);//make larger later
+	if(listen( fd, 5) == -1){
+		perror("Listen error.");
+		exit(1);
+	
+	}//make larger later
 	printf("Listening ...\n");
 	int fdListen = fd;
 	while( TRUE ){
