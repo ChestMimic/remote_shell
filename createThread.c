@@ -4,6 +4,7 @@
 #include <asm/errno.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 #include <sys/socket.h>
 int WorkThread( void * ); // Prototype
