@@ -79,9 +79,10 @@ main(int argc, char* argv[]){
 	printf("%d\n", size);
 	printf("%s\n",buffer);
 	close(fdConn);
-	
-	
-	pthread_create( pthread_t &Thread, pthread_attr_init(pthread_attr_t &Attribute ), WorkThread, &fdConn);
+	pthread_t Thread;
+	pthread_attr_t Attribute;
+	pthread_attr_init( &Attribute )
+	pthread_create( &Thread, &Attribute, WorkThread, &fdConn);
 	/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		
@@ -92,7 +93,7 @@ main(int argc, char* argv[]){
 } // End of main
 // This is the new thread that's created
 
-int WorkThread( int fdConn ){
+int WorkThread( int *fdConn ){
 	//printf("New thread.
 
 	//make input buffer
