@@ -107,31 +107,3 @@ int WorkThread( int &fdConn ){
 // End of WorkThread
 
 
-
-
-unsigned int    CreateAThread( void *ThreadStartAddress, int *data )
-{
-    int                  ReturnCode;
-    pthread_t            Thread;
-    pthread_attr_t       Attribute;
-
-    ReturnCode = pthread_attr_init( &Attribute );
-    if ( ReturnCode != 0 )
-        printf( "Error in pthread_attr_init in CreateAThread\n" );
-    ReturnCode = pthread_attr_setdetachstate( &Attribute, PTHREAD_CREATE_JOINABLE );
-    if ( ReturnCode != 0 )
-        printf( "Error in pthread_attr_setdetachstate in CreateAThread\n" );
-    ReturnCode = pthread_create( &Thread, &Attribute, ThreadStartAddress, (void *)&data );
-    if ( ReturnCode == EINVAL )                        /* Will return 0 if successful */
-        printf( "ERROR doing pthread_create - The Thread, attr or sched param is wrong\n");
-    if ( ReturnCode == EAGAIN )                        /* Will return 0 if successful */
-        printf( "ERROR doing pthread_create - Resources not available\n");
-    if ( ReturnCode == EPERM )                        /* Will return 0 if successful */
-        printf( "ERROR doing pthread_create - No privileges to do this sched type & prior.\n");
-
-    ReturnCode = pthread_attr_destroy( &Attribute );
-    if ( ReturnCode )                                    /* Will return 0 if successful */
-        printf( "Error in pthread_mutexattr_destroy in CreateAThread\n" );
-    return( (unsigned int)Thread );
-}                            // End of CreateAThread 
-
