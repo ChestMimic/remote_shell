@@ -66,28 +66,15 @@ main(int argc, char* argv[]){
 	printf("Listening ...\n");
 	int fdListen = fd;
 	while( TRUE ){
-       /* sin_size = sizeof their_addr;
+        sin_size = sizeof their_addr;
 		printf("waiting for next accept\n");
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
 		printf("Connection established.\n");
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
-	*/
 	
-	char buffer[MAXBUF];
-	int clientfd;
-		struct sockaddr_in client_addr;
-		int addrlen=sizeof(client_addr);
-
-		/*---accept a connection (creating a data pipe)---*/
-		clientfd = accept(fd, (struct sockaddr*)&client_addr, &addrlen);
-		printf("%s:%d connected\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-
-		/*---Echo back anything sent---*/
-		send(clientfd, buffer, recv(clientfd, buffer, MAXBUF, 0), 0);
-
-		/*---Close data connection---*/
-		close(clientfd);
+	
+	
 	
 	
 	}
