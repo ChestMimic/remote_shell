@@ -73,9 +73,9 @@ main(int argc, char* argv[]){
 		
 		
 		char buffer[MAXBUF];
-		send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
-	
-	close(fdConn);
+		int size = recv(fdConn, buffer, MAXBUF, 0), 0);
+		printf("%d\n", size);
+		close(fdConn);
 		
 		/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
