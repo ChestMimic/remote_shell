@@ -71,6 +71,18 @@ main(int argc, char* argv[]){
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 	//	printf("%s\n", &fdConn);
+	
+	char buffer[MAXBUF];
+	//int size = recv(fdConn, buffer, MAXBUF, 0);
+	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
+	int size=recv(fdConn, buffer, MAXBUF, 0);
+	printf("%d\n", size);
+	printf("%s\n",buffer);
+	close(fdConn);
+	
+	
+	
+	
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		printf("Thread made\n");
 	}
@@ -88,7 +100,7 @@ int WorkThread( void *data ){
 	char buffer[MAXBUF];
 	//int size = recv(fdConn, buffer, MAXBUF, 0);
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
-	int size=recv(&fdConn, buffer, MAXBUF, 0);
+	int size=recv(fdConn, buffer, MAXBUF, 0);
 	printf("%d\n", size);
 	printf("%s\n",buffer);
 	close(fdConn);
