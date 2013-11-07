@@ -70,7 +70,7 @@ main(int argc, char* argv[]){
 		printf("waiting for next accept\n");
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
-		printf("%s\n", fdConn);
+		printf("%s\n", &fdConn);
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		printf("Thread made\n");
 	}

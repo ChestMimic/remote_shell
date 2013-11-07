@@ -1,2 +1,2 @@
 all:
-	gcc createThread.c -o serverCheckpoint
+	gcc createThread.c -pthread -o serverCheckpoint
