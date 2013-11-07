@@ -78,6 +78,7 @@ int WorkThread( void *data ){
 		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
 		size = recv(fdConn, buffer, MAXBUF, 0);
 		printf(buffer);
+		send(fdConn, "Hello", sizeof("Hello"), 0);
 	}while(size > 0);//keep reading until nothing is left
 	
 	
