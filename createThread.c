@@ -33,8 +33,8 @@ main(int argc, char* argv[]){
 	socklen_t sin_size;
 	struct sockaddr_in self;
 	// Get the port number via the command line
-	listener = argv[1];//grab port number
-	printf("%d\n", argv[1]);
+	listener = atoi(argv[1]);//grab port number
+	printf("%d\n", listener);
 	//memset(&hints, 0, sizeof hints);
 	
 	/*---Initialize address/port structure---*/
@@ -96,12 +96,12 @@ int WorkThread( int fdConn ){
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	int size=1;
 	
-	while(size > 0){
+	//while(size > 0){
 		size=recv(fdConn, buffer, MAXBUF, 0);
 
 	
 		printf("%s",buffer);
-	}
+	//}
 	send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
 	
