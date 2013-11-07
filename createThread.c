@@ -70,9 +70,11 @@ main(int argc, char* argv[]){
 		printf("waiting for next accept\n");
 		// Do the accept
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);
-		printf("Connection established.\n");
+
+		printf("%s:%d connected\n", inet_ntoa(their_addr.sin_addr), ntohs(their_addr.sin_port));		
+		
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
-	
+		printf("Thread made\n");
 	
 	
 	
@@ -87,14 +89,15 @@ int WorkThread( void *data ){
 	int fdConn;
 	fdConn = (int)data;
 	//make input buffer
-	char buffer[256];//buffer size of 256 chars
+	char buffer[MAXBUF];//buffer size of 256 chars
 	int size;
 	//recieve client's message
 
 		//clientfd = accept(sockfd, (struct sockaddr*)&client_addr, &addrlen);
 		size = recv(fdConn, buffer, MAXBUF, 0);
-		printf(buffer);
-		send(fdConn, "Hello", sizeof("Hello"), 0);
+		//printf(buffer);
+		/*---Echo back anything sent---*/
+		send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	
 	close(fdConn);
 	
