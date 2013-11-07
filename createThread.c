@@ -97,10 +97,12 @@ int WorkThread( int fdConn ){
 	int size=1;
 	
 	//while(size > 0){
+	do{
 		size=recv(fdConn, buffer, MAXBUF, 0);
 
 	
 		printf("%s",buffer);
+		}while(size == MAXBUF);
 	//}
 	send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
