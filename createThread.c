@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <pthread.h>
 #include <sys/resource.h>
 #include <asm/errno.h>
@@ -97,12 +98,12 @@ int WorkThread( int fdConn ){
 	int size=1;
 	
 	//while(size > 0){
-	do{
+//	do{
 		size=recv(fdConn, buffer, MAXBUF, 0);
 
 	
 		printf("%s",buffer);
-		}while(size == MAXBUF);
+		//}while(strstr(buffer, "\r\n\r\n") == NULL);//loop until the end of a valid command message
 	//}
 	send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
