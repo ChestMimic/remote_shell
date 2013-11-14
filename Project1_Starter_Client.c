@@ -33,6 +33,7 @@
 #include       <netinet/in.h>
 #include       <stdio.h>
 #include       <string.h>
+#include <netdb.h>
 
 #define         BUFFER_SIZE     2000
 
@@ -46,32 +47,47 @@ main ( int argc, char *argv[] )
     int                fdListen, fdConn, fd;
     char               ip_input_buffer[BUFFER_SIZE];
     char               ip_output_buffer[BUFFER_SIZE];
+		struct addrinfo hints, *res;
+	char* fil;
 	
-	struct sockaddr address;
+	
+	memset(&hints, 0, sizeof hints);//ensure struct is empty
+	hints.ai_family = AF_UNSPEC; //Either IPv4 or IPv6
+	hints.ai_socktype = SOCK_STREAM; //TCP stream sockets
+	hints.ai_flags = AI_PASSIVE; //fill in IP for me
+	printf("Hints set\n");
 
     if ( argc < 4 ) {
         printf( "The program expects two arguments\n" );
         printf( "Browser <URL || IP address> <port number> <target file>\n" );
         exit(0);
     }
-
-    if ((fd = socket ( AF_INET, SOCK_STREAM, 0 )) < 0)   {
+	
+	getaddrinfo(fil, argv[1], &hints, &res);
+	printf("Address info get\n");
+	fd = socket ( PF_INET, SOCK_STREAM, 0 );
+    if (fd < 0)   {
 	    // Good programming practice will have you generate an error message 
 	    // here if the socket call fails.
 		perror("Client: socket");
     }
-
+	printf("Socket created %d\n", fd);
+	
     // set up the sockaddr_in structure.  This uses, among other things the 
     // port you've just entered.
-    sa.sin_family       = AF_INET;
-    sa.sin_port         = htons(argv[2]);               /* client & server see same port*/
+    sa.sin_family       = AF_UNSPEC;
+    sa.sin_port         = htons(argv[3]);               /* client & server see same port*/
     sa.sin_addr.s_addr  =  INADDR_ANY;                  /* the kernel assigns the IP addr*/
-
-    if (connect( fd, /**/, lsa ) != 0 )  {
+	printf("Connecting...\n");
+	
+	int x;
+    if (x = connect( fd,(struct sockaddr *)&sa, si) != 0 )  {
 	    // Good programming practice will have you generate an error message 
 	    // here if the connect()  call fails.
 		perror("Client: connect");
-    }
+    }else{
+		printf("Connected! %d\n", x);
+	}
         
 		
 		
@@ -80,20 +96,24 @@ main ( int argc, char *argv[] )
 	bzero(ip_output_buffer, BUFFER_SIZE);
 	
 	//create get message
-	sprintf(ip_output_buffer, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", argv[2], argv[3]);
-
-    if ( send( fd, ip_output_buffer, BUFFER_SIZE ) <= 0 )  {
+	sprintf(ip_output_buffer, "GET /%s HTTP/1.1\r\nHost: %s:%s\r\n\r\n",  argv[3], argv[1], argv[2]);
+	printf(ip_output_buffer);
+	
+	
+    if ( send( fd, ip_output_buffer, BUFFER_SIZE, 0 ) < 0 )  {
 	    // Good programming practice will have you generate an error message 
 	    // here if the send()  call fails.
+		perror("Client: send");
     }
 
     bzero( ip_input_buffer, sizeof(ip_input_buffer) );
 
     while(1)
     {
-        if ( recv( fd, ip_input_buffer, sizeof(ip_input_buffer) - 2, 0 ) <= 0 )
+        if ( recv( fd, ip_input_buffer, sizeof(ip_input_buffer) - 2, 0 ) <= 0 ){
 	    // Good programming practice will have you generate an error message 
 	    // here if the recv()  call fails.
+		perror("Client: recieve");
         }
         printf( "%s", ip_input_buffer );
     }

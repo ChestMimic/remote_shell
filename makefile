@@ -1,3 +1,3 @@
 all:
-	gcc createThread.c -pthread -o serverCheckpoint
-	gcc Project1_Starter_Client.c -o client
+	gcc createThread.c -pthread -o server
+	gcc http_client.c -o client

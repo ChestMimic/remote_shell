@@ -15,15 +15,17 @@
 	* is the DEREFERENCING OPERATOR, and when given to a variable, it returns the VALUE STORED AT THE ADDRESS LISTED IN THE VARIABLE
 */
 
-#define BUFFERSIZE 500;
+//code is partially based on tutorial found at http://www.beej.us
+
+#define         BUFFER_SIZE     2000
 //Main program
 int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (from stack overflow)
 	struct addrinfo hints, *res;
 	struct sockaddr_in sin;
 	int sock;
 	int bytecount;
-	char buffer[256];
-	char request[1024];
+	char buffer[BUFFER_SIZE];
+	char request[BUFFER_SIZE];
 	char arg[500], argB[500];
 	char *fil;
 	
@@ -37,57 +39,38 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	//split address into host and file
 	int spot;
 	char* path;
-	if(argc == 3){
+	
+	
+	if ( argc < 4 ) {
+        printf( "The program expects two arguments\n" );
+        printf( "Browser <URL || IP address> <port number> <target file>\n" );
+        exit(0);
+    }
+	else{
 		strcpy(arg, argv[1]);//grabs whole URL from arguments
 		strcpy(argB, argv[1]);
 	
 		fil = strtok(arg, "/");//fil is now the base domain and dot com/edu/whatever
-		path = strtok(NULL, "");
-		if(path == NULL){
-			path = "";
-		}
+		path = argv[3];
 		printf("%s", fil);
-	}
-	else if(argc == 4){
-		strcpy(arg, argv[2]);//grabs whole URL from arguments
-		strcpy(argB, argv[2]);
 	
-		fil = strtok(arg, "/");//fil is now the base domain and dot com/edu/whatever
-		path = strtok(NULL, "");
-		if(path == NULL){
-			path = "";
-		}
-		printf("%s", fil);
+	
+	
 	}
-	else{
-		printf("Incorrect input.\nUse ./httpCli (-p) domain port.\n");
-		exit(1);
-	}
+	
+	
+	
 	//printf("%s", argB[strlen(fil)]);
 	
 	struct timeval start, end;
 	double time_in_mill_S = 0;
 	double time_in_mill_E = 0;
-	if(argc == 3){
-		getaddrinfo(fil, argv[2], &hints, &res);
-		sprintf(request, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", path, fil);
-		printf("Sending request:\n");
-		printf("%s\n", request);
-	}
-	else if(argc == 4){
-		getaddrinfo(fil, argv[3], &hints, &res);
-		sprintf(request, "GET /%s HTTP/1.1\r\nHost: %s\r\n\r\n", path, fil);
-		printf("Sending request:\n");
-		printf("%s\n", request);
-		if((strcmp("-p", argv[2])) == 0){
-			gettimeofday(&start, NULL);
-			time_in_mill_S = (start.tv_sec) * 1000 + (start.tv_usec) / 1000 ;
-		}
-	}
-	else{
-		//incorrect input
-		exit(1);
-	}	
+
+	getaddrinfo(fil, argv[2], &hints, &res);
+	sprintf(request, "GET /%s HTTP/1.1\r\nHost: %s:%s\r\n\r\n", path, fil, argv[2]);
+	printf("Sending request:\n");
+	printf("%s\n", request);
+
 	
 	sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 	printf("Socket");
@@ -98,6 +81,7 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	}
 	
 	if(connect(sock, res->ai_addr, res->ai_addrlen) == -1){
+	
 		exit(1);//something went wrong. Quit
 	}
 	printf("Connected!\n");
@@ -112,27 +96,24 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 		printf("Sent %d of %d\n",iSend, strlen(request));
 	}
 	
-	int iRes = 1;
-	while(iRes > 0){//currently an infinite loop on success?
-		if((iRes = recv(sock, buffer, sizeof(buffer) - 1, 0)) == -1){
-			printf("Error\n");
-		}else{
-			//printf("%d\n", iRes);
-			buffer[iRes+ 1] = '\0';
-			printf("%s", buffer);
-			bzero(buffer, 256);
-		}
-	}
+
 	
-	
-	if(argc == 4){
-		if((strcmp("-p", argv[2])) == 0){
-			gettimeofday(&end, NULL);
-			time_in_mill_E = (end.tv_sec) * 1000 + (end.tv_usec) / 1000 ;
-		}
+	int flag = 0;
+	while(1)
+   {
+        if ( recv( sock, buffer, BUFFER_SIZE, 0 ) < 0 ){
+	    // Good programming practice will have you generate an error message 
+	    // here if the recv()  call fails.
+			perror("Client: recieve");
+			break;
+        }
 		
-		 printf("%d\n", (time_in_mill_E - time_in_mill_S));
-	}
+        printf( "%s", buffer );
+		bzero(buffer, BUFFER_SIZE);
+   }
+	
+	
+
 	
 	//Finish up
 	close(sock);
