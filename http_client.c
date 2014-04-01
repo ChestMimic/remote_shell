@@ -67,9 +67,7 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	double time_in_mill_E = 0;
 
 	getaddrinfo(fil, argv[2], &hints, &res);
-	sprintf(request, "GET /%s HTTP/1.1\r\nHost: %s:%s\r\n\r\n", path, fil, argv[2]);
-	printf("Sending request:\n");
-	printf("%s\n", request);
+	
 
 	
 	sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
@@ -86,6 +84,7 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	}
 	printf("Connected!\n");
 	
+	/*
 	int iSend;
 	//send GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.1
 	if(	(iSend =  send(sock, request, strlen(request), 0)) < 0){
@@ -94,10 +93,10 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	}
 	else{
 		printf("Sent %d of %d\n",iSend, strlen(request));
-	}
+	}*/
 	
 
-	
+	/*
 	int flag = 0;
 	while(1)
    {
@@ -110,7 +109,7 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 		
         printf( "%s", buffer );
 		bzero(buffer, BUFFER_SIZE);
-   }
+   }*/
 	
 	
 
