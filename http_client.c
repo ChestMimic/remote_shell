@@ -83,7 +83,10 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 		exit(1);//something went wrong. Quit
 	}
 	printf("Connected!\n");
-	
+	if(	(send(sock, "Hello", strlen("Hello"), 0)) < 0){
+		printf("Error in send\n");
+		exit(1);
+	}
 	/*
 	int iSend;
 	//send GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.1

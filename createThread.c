@@ -102,56 +102,12 @@ int WorkThread( int fdConn ){
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	int size=1;
 	
-	//while(size > 0){
-//	do{
-		size=recv(fdConn, buffer, MAXBUF, 0);
+	size=recv(fdConn, buffer, MAXBUF, 0);
 
+	printf("%s\n", buffer);
+		
 	
-		printf("%s",buffer);
-		//}while(strstr(buffer, "\r\n\r\n") == NULL);//loop until the end of a valid command message
-	//}
-	
-	char arg[MAXBUF];
-	strcpy(arg, buffer);
-	char* fil = strtok(arg, "/");//fil is now the GET 
-	char* path = strtok(NULL, "/");
-	strtok(path, " ");//cut spaces
 
-//	path = path+1;
-	printf("%s\n", path);
-	
-	if(strcmp(path, "") != 0){//file is given in request
-		FILE *fp;
-		fp = fopen(path, "r");
-		
-
-		
-		if (fp == NULL) {
-			printf("Requested file %s could not be opened.\n", path);
-			if (send(fdConn, "HTTP/1.1 404 File not found\r\n\r\n", strlen("HTTP/1.1 404 File not found\r\n\r\n"), 0) == -1){
-				perror("send");
-			}
-		}
-		else{//file exists and is readable
-			if (send(fdConn, "HTTP/1.1 200 OK\r\n\r\n", strlen("HTTP/1.1 200 OK\r\n\r\n"), 0) == -1){
-				perror("send");
-			}
-			
-			while(fgets(buffer_out, MAXBUF, fp) != NULL)
-			{
-				send(fdConn, buffer_out, MAXBUF, 0);
-				printf(buffer_out);
-				bzero(buffer_out, MAXBUF);
-			}
-			printf("File end\n");
-			
-			fclose(fp);
-		}
-		
-	}
-	
-	
-	//send(fdConn, "Hello.", sizeof("Hello."), 0);
 	close(fdConn);
 	
 
