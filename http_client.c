@@ -1,6 +1,9 @@
 /* Author: Mark Fitzgibbon
 */
+
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -82,11 +85,27 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	
 		exit(1);//something went wrong. Quit
 	}
+	
+	
+	printf("Enter message to send: ");
+	int max = 128;
+	char* name = (char*)malloc(max);
+	int c;
+	fgets(name, max, stdin);
+	printf("Username is: %s\n", name);
+	
+	
 	printf("Connected!\n");
-	if(	(send(sock, "Hello", strlen("Hello"), 0)) < 0){
+	if(	(send(sock, name, strlen(name), 0)) < 0){
 		printf("Error in send\n");
 		exit(1);
 	}
+	
+	
+	
+	
+	
+	
 	/*
 	int iSend;
 	//send GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.1

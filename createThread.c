@@ -1,4 +1,7 @@
+
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <sys/resource.h>
@@ -13,7 +16,7 @@
 #define TRUE 1
 #define REQUESTOK	"200 OK"
 #define REQUESTBAD	"404 File not found"
-int WorkThread(int);
+int WorkThread(int fdConn);
 // ///////////////////////////////////////////////////////////////////////
 // This is the main() code - it is the original thread
 // ///////////////////////////////////////////////////////////////////////
@@ -73,11 +76,13 @@ main(int argc, char* argv[]){
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 	//	printf("%s\n", &fdConn);
 	
-
+/*
 	pthread_t Thread;
 	pthread_attr_t Attribute;
 	pthread_attr_init( &Attribute );
 	pthread_create( &Thread, &Attribute, WorkThread, fdConn);
+	*/
+	WorkThread(fdConn);
 	/*
 		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
 		
@@ -87,7 +92,7 @@ main(int argc, char* argv[]){
 	
 } // End of main
 // This is the new thread that's created
-
+//Legacy name, kept for convinience but not actually a thread. Refactor
 int WorkThread( int fdConn ){
 	//printf("New thread.
 
@@ -102,10 +107,16 @@ int WorkThread( int fdConn ){
 	//send(fdConn, buffer, recv(fdConn, buffer, MAXBUF, 0), 0);
 	int size=1;
 	
+	
+	
 	size=recv(fdConn, buffer, MAXBUF, 0);
 
 	printf("%s\n", buffer);
-		
+	
+	//gen unique random number
+	time_t t;
+	int urn;
+	srand((unsigned) time(&t));
 	
 
 	close(fdConn);
