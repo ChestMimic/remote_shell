@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,26 +7,29 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <pthread.h>
-
+#include <crypt.h>
 #include <sys/socket.h>
+#include <signal.h>
+#include <unistd.h>
 
 #define MAXBUF		1024
 #define TRUE 1
 #define REQUESTOK	"200 OK"
 #define REQUESTBAD	"404 File not found"
-int WorkThread(int fdConn);
+#define PASSWD	"Hello"
+int WorkThread(int fdConn, pid_t pid);
 // ///////////////////////////////////////////////////////////////////////
 // This is the main() code - it is the original thread
 // ///////////////////////////////////////////////////////////////////////
 main(int argc, char* argv[]){
-	unsigned int CurrentPriority, MyPid;
+	unsigned int CurrentPriority;
 	unsigned int NewThreadID;
 	
 	int listener;
 	int fd;
+	pid_t pid;
+	int numPro = 0;
 	
-	
-	MyPid = pthread_self(); 
 	CurrentPriority = getpriority( PRIO_PROCESS, 0 );
 	// Create a new thread that will start executing at location
 	//WorkThread NewThreadID = CreateAThread( (void *)(* WorkThread), &data);
@@ -76,24 +77,24 @@ main(int argc, char* argv[]){
 		int fdConn = accept( fdListen, (struct sockaddr *)&their_addr, &sin_size);		
 	//	printf("%s\n", &fdConn);
 	
-/*
-	pthread_t Thread;
-	pthread_attr_t Attribute;
-	pthread_attr_init( &Attribute );
-	pthread_create( &Thread, &Attribute, WorkThread, fdConn);
-	*/
-	WorkThread(fdConn);
-	/*
-		int out = CreateAThread( (void *)(*WorkThread), &fdConn);
+
+		pid = fork();
+		if(pid > 0){
+			WorkThread(fdConn, pid);
+			kill(pid, SIGTERM);//marks child process as dead/zombie to be killed at program exit
+			numPro--;
+		}
+		else{
+			numPro++;
+		}
 		
-		*/
-	printf("Thread made\n");
+	
 	}
 	
 } // End of main
 // This is the new thread that's created
 //Legacy name, kept for convinience but not actually a thread. Refactor
-int WorkThread( int fdConn ){
+int WorkThread( int fdConn, pid_t pid ){
 	//printf("New thread.
 
 	//make input buffer
@@ -112,13 +113,98 @@ int WorkThread( int fdConn ){
 	size=recv(fdConn, buffer, MAXBUF, 0);
 
 	printf("%s\n", buffer);
-	
-	//gen unique random number
-	time_t t;
-	int urn;
-	srand((unsigned) time(&t));
-	
+	if(strcmp("mwfitzgibbon", buffer) == 0){
+		
+		//gen unique random number
+		time_t t;
+		char urn1;
+		char urn2;
+		srand((unsigned) time(&t));
+		
+		char urnS[3] = {('A' + rand()%26), ('A' + rand()%26), '\0'};
+		
+		
+		printf("%s\n", urnS);
+		if(	(send(fdConn, urnS, strlen(urnS), 0)) < 0){
+			printf("Error in send\n");
+			//kill self
+		}
+		bzero(buffer, MAXBUF);
+		
+		int rConfirm = 88;
+		while(rConfirm != 0){
+			if ( rConfirm = recv( fdConn, buffer, MAXBUF, 0 ) < 0 ){
+				// Good programming practice will have you generate an error message 
+				// here if the recv()  call fails.
+				perror("Client: recieve");
+			}	
+		
+        
+		
+		}
 
+		printf("%s\n", buffer);
+		char* check =  crypt("Hello", urnS);
+		if(strcmp(check, buffer) == 0){
+			printf("Passwords match\n");
+			
+			bzero(buffer, MAXBUF);
+			
+			
+			rConfirm = 88;
+			while(rConfirm != 0){
+				if ( rConfirm = recv( fdConn, buffer, MAXBUF, 0 ) < 0 ){
+					// Good programming practice will have you generate an error message 
+					// here if the recv()  call fails.
+					perror("Client: recieve");
+				}	
+			}	
+			
+			char line[MAXBUF];
+			strcpy(line, buffer);
+			
+			//parsing influenced from solution found at csl.mtu.edu
+			/*
+			char* token;
+			token = strtok(line, " ");
+			int i = 0;
+			char* path;
+			char* args;
+			printf("ping\n");
+			while(token != NULL){
+				if(i ==0){
+					strcpy(path, token);
+				}
+				else{
+					strcat(args, token);
+					strcat(args, " ");
+				}
+				i++;
+				token = strtok(line, " ");
+			}
+			*/
+			
+			
+			dup2(fdConn, STDOUT_FILENO);
+			dup2(fdConn, STDERR_FILENO);
+			//execl(path, args);
+			system(line);
+			
+		}
+		else{
+			printf("Incorrect password, exiting attempt\n");
+			//kill self
+		}
+	}
+	else{
+		//incorrect username recieved
+		if(	(send(fdConn, "ERR", strlen("ERR"), 0)) < 0){
+			printf("Error in send\n");
+			
+		}
+		//kill self
+	}
+	
 	close(fdConn);
 	
 

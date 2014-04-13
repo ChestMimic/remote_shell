@@ -1,3 +1,8 @@
+Mark FItzgibbon HW 2
+mwfitzgibbon
+username and password are hardcoded into the program
+
+
 To compile the code, use the command
 	make all
 Ignore the warnings that appear, they do not affect the code
@@ -15,5 +20,33 @@ known issues with client:
 	
 run server
 	./server <port>
-known issues with server:
-	-can not send binary files. Attempting to do so segfaults. I have no idea how this is fixed.
+	
+known issues:
+	seems to disconnect at second client attempt, don't know why
+	
+Experiments:
+	(Due to time, experiments are not very thorough)
+	Latency:
+		Minimal latency from ccc machine. (close to 0.03 seconds)
+	Time a client command vs same command directly on server: 
+		Commands vary only by small amount, probably due to testing on localhost in ccc machines. 
+		Client is usually larger, presumably to account for connection latency
+	Use time inside of a remote command:
+		Time returned is relatively similar to running command directly on server
+		
+	Analasys:
+		The environment I have to test is not an ideal testing environment, since variances in network on local machines are small
+		presumably, commands usually run around the same average timeframe when the latency time is excluded
+		
+sample server text:
+	./server 8081
+8081
+socket established
+Socket bound.
+Listening ...
+waiting for next accept
+waiting for next accept
+mwfitzgibbon
+JU
+JUbxuwKVStKHI
+Passwords match

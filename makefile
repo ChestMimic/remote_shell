@@ -1,3 +1,3 @@
 all:
-	gcc createThread.c -pthread -o server
-	gcc http_client.c -o client
+	gcc createThread.c -pthread -o server -lcrypt
+	gcc http_client.c -o client -lcrypt

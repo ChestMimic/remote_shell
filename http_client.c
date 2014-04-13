@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <crypt.h>
 //I haven't used C or C++ in a while, so code may be sloppy
 /*
 	NOTE TO SELF:
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	
 	if ( argc < 4 ) {
         printf( "The program expects two arguments\n" );
-        printf( "Browser <URL || IP address> <port number> <target file>\n" );
+        printf( "Browser <URL || IP address> <port number> <command>\n" );
         exit(0);
     }
 	else{
@@ -87,11 +88,11 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 	}
 	
 	
-	printf("Enter message to send: ");
-	int max = 128;
-	char* name = (char*)malloc(max);
-	int c;
-	fgets(name, max, stdin);
+	//printf("Enter message to send: ");
+	//int max = 128;
+	char* name = "mwfitzgibbon";
+	//int c;
+	//fgets(name, max, stdin);
 	printf("Username is: %s\n", name);
 	
 	
@@ -100,41 +101,74 @@ int main(int argc, char *argv[]){ //Supposedly accepts command line arguments (f
 		printf("Error in send\n");
 		exit(1);
 	}
-	
-	
-	
-	
-	
-	
 	/*
-	int iSend;
-	//send GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.1
-	if(	(iSend =  send(sock, request, strlen(request), 0)) < 0){
-		printf("Error in send\n");
+	if(strcmp(buffer, "ERR") == 0){
+		printf("Incorrect username.\n");
 		exit(1);
-	}
-	else{
-		printf("Sent %d of %d\n",iSend, strlen(request));
 	}*/
+	bzero(buffer, BUFFER_SIZE);
 	
-
-	/*
-	int flag = 0;
-	while(1)
-   {
-        if ( recv( sock, buffer, BUFFER_SIZE, 0 ) < 0 ){
+	int rConfirm = 88;
+	while(rConfirm != 0){
+	if ( rConfirm = recv( sock, buffer, BUFFER_SIZE, 0 ) < 0 ){
 	    // Good programming practice will have you generate an error message 
 	    // here if the recv()  call fails.
 			perror("Client: recieve");
-			break;
         }
 		
-        printf( "%s", buffer );
-		bzero(buffer, BUFFER_SIZE);
-   }*/
+        
+		
+	}
+	if(strcmp(buffer, "ERR") == 0){//Correct replies will ALWAYS be two characters long
+		printf("Incorrect username.\n");
+		exit(1);
+	}
+	printf( "%s\n", buffer );
+	
+	char* hash = crypt("Hello", buffer); //unsafe in a real world setting
+	printf("%s\n", hash);
+	if(	(send(sock, hash, strlen(hash), 0)) < 0){
+		printf("Error in send\n");
+		exit(1);
+	}
+	bzero(buffer, BUFFER_SIZE);
+	
+	//send command
+	//from arg #4
+	printf("%d\n", argc);
+	int i = 3;
+	char cmd[BUFFER_SIZE];
+	while(i < argc){
+		strcat(cmd, argv[i]);
+		strcat(cmd, " ");
+		
+		i++;
+	}
+	printf("%s\n", cmd);
+	
+	if(	(send(sock, cmd, strlen(cmd), 0)) < 0){
+		printf("Error in send\n");
+		exit(1);
+	}
 	
 	
-
+	while(1){
+		if ( recv( sock, buffer, BUFFER_SIZE, 0 ) <= 0 ){
+			// Good programming practice will have you generate an error message 
+			// here if the recv()  call fails.
+			perror("Client: recieve");
+			break;
+		}
+		else{
+			printf("%s", buffer);
+			bzero(buffer, BUFFER_SIZE);
+		}
+	}
+		
+        
+		
+	
+	
 	
 	//Finish up
 	close(sock);
