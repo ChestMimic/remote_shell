@@ -107,7 +107,8 @@ int WorkThread( int fdConn, pid_t pid ){
 	bzero(buffer_out, MAXBUF);
 	
 	
-	
+	recv(fdConn, buffer, MAXBUF, 0);
+	printf("%s\n", buffer);
 	
 	
 
